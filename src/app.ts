@@ -79,7 +79,14 @@ app.post("/api/customers/:id/purchase", (req: Request, res: Response): void => {
 	const purchaseAmount: number = req.body.amount;
 	const storeLocation: string = req.body.storeLocation;
 
-	customer.points += Math.floor(purchaseAmount / 10);
+	if (purchaseAmount > 5000) {
+		customer.points += Math.floor(purchaseAmount / 10) * 2
+	} else if (purchaseAmount >= 1000) {
+		customer.points += Math.floor(purchaseAmount / 10) * 1.5
+	} else {
+		customer.points += Math.floor(purchaseAmount / 10)
+	}
+	//customer.points += Math.floor(purchaseAmount / 10);
 	customer.lastPurchaseDate = new Date().toISOString();
 
 	if (customer.points >= 750) {
